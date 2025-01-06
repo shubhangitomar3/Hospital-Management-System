@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styless.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h2>Welcome, {{ username }}!</h2>
+        </header>
+
+        <!-- Appointments Section -->
+        <section class="appointments-section">
+            <h3>Your Appointments</h3>
+            <table class="appointments-table">
+                <thead>
+                    <tr>
+                        <th>Appointment ID</th>
+                        <th>Doctor</th>
+                        <th>Appointment Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appointment in appointments %}
+                    <tr>
+                        <td>{{ appointment[0] }}</td>
+                        <td>{{ appointment[1] }}</td>
+                        <td>{{ appointment[2] }}</td>
+                        <td>{{ appointment[3] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Bills Section -->
+        <section class="bills-section">
+            <h3>Your Bills</h3>
+            <table class="bills-table">
+                <thead>
+                    <tr>
+                        <th>Bill ID</th>
+                        <th>Amount</th>
+                        <th>Bill Date</th>
+                        <th>Appointment Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for bill in bills %}
+                    <tr>
+                        <td>{{ bill[0] }}</td>
+                        <td>{{ bill[1] }}</td>
+                        <td>{{ bill[2] }}</td>
+                        <td>{{ bill[3] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Book Appointment Section -->
+        <section class="book-appointment-section">
+            <h3>Book an Appointment</h3>
+
+            <!-- Display Success/Error messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul>
+                        {% for category, message in messages %}
+                            <li class="{{ category }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+
+            <!-- Appointment Form -->
+            <form method="POST" action="{{ url_for('book_appointment') }}">
+                <div class="form-group">
+                    <label for="doctor_id">Select Doctor:</label>
+                    <select name="doctor_id" id="doctor_id" required>
+                        {% if doctors %}
+                            {% for doctor in doctors %}
+                                <option value="{{ doctor[0] }}">{{ doctor[1] }} - {{ doctor[2] }}</option>
+                            {% endfor %}
+                        {% else %}
+                            <option value="">No doctors available</option>
+                        {% endif %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="appointment_date">Appointment Date:</label>
+                    <input type="date" name="appointment_date" id="appointment_date" required>
+                </div>
+
+                <button type="submit" class="btn-submit">Book Appointment</button>
+            </form>
+        </section>
+
+        <!-- Logout Link -->
+        <footer>
+            <a href="{{ url_for('logout') }}" class="logout-link">Logout</a>
+        </footer>
+    </div>
+</body>
+</html>

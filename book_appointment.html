@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment</title>
+</head>
+<body>
+
+<h1>Book an Appointment</h1>
+
+<form method="POST">
+    <label for="doctor_id">Select Doctor:</label>
+    <select name="doctor_id" id="doctor_id">
+        {% for doctor in doctors %}
+        <option value="{{ doctor.id }}">{{ doctor.name }} - {{ doctor.specialty }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <label for="appointment_date">Appointment Date:</label>
+    <input type="date" name="appointment_date" id="appointment_date" required><br><br>
+
+    <button type="submit">Book Appointment</button>
+</form>
+
+<a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+
+</body>
+</html>
